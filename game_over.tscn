@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtc6gdis8rh7t"]
+
+[ext_resource type="Script" path="res://game_over.gd" id="1_cmygl"]
+
+[node name="GameOver" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_cmygl")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 760.0
+offset_bottom = 560.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.00392157)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = -4.0
+offset_right = 72.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over - Out of Fuel"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="."]
+process_mode = 3
+offset_left = 380.0
+offset_top = 350.0
+offset_right = 445.0
+offset_bottom = 381.0
+text = "Restart"
+
+[connection signal="pressed" from="RestartButton" to="." method="_on_button_pressed"]

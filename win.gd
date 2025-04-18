@@ -5,7 +5,12 @@ func _ready() -> void:
 		$RestartButton.pressed.connect(_on_restart_pressed)
 	get_tree().paused = true
 	visible = true
-	print("Game over screen displayed")
+	print("Win screen displayed")
+
+func set_score(total_score: int, time_taken: float, pickup_score: int, fuel_bonus: int) -> void:
+	var time_score = total_score - pickup_score - fuel_bonus
+	$ScoreLabel.text = "You Win!\nTime Taken: %.1fs\nTime Score: %d\nPickups: %d\nFuel Bonus: %d\nTotal Score: %d" % [time_taken, time_score, pickup_score, fuel_bonus, total_score]
+	print("Score set: ", $ScoreLabel.text)
 
 func _on_restart_pressed() -> void:
 	print("Restart button pressed")

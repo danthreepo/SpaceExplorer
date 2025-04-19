@@ -5,8 +5,15 @@ func _ready() -> void:
 		$StartButton.pressed.connect(_on_start_button_pressed)
 	if not $ResetScoreButton.pressed.is_connected(_on_reset_score_button_pressed):
 		$ResetScoreButton.pressed.connect(_on_reset_score_button_pressed)
+	if not $MenuSound.finished.is_connected(_on_menu_sound_finished):
+		$MenuSound.finished.connect(_on_menu_sound_finished)
 	load_high_score()
 	visible = true
+	$TitleLabel.modulate = Color(1, 1, 1, 0)
+	var tween = create_tween()
+	tween.tween_property($TitleLabel, "modulate", Color(1, 1, 1, 1), 1.0)
+	if $MenuSound.stream and not $MenuSound.playing:
+		$MenuSound.play()
 	print("Start menu displayed")
 
 func load_high_score() -> void:
@@ -42,3 +49,8 @@ func _on_reset_score_button_pressed() -> void:
 		DirAccess.remove_absolute("user://high_score.save")
 		$HighScoreLabel.text = "High Score: 0"
 		print("High score reset")
+
+func _on_menu_sound_finished() -> void:
+	print("Menu sound finished, replaying sound")
+	if $MenuSound.stream and not $MenuSound.playing:
+		$MenuSound.play()

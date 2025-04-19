@@ -5,6 +5,13 @@ func _ready() -> void:
 		$RestartButton.pressed.connect(_on_restart_pressed)
 	get_tree().paused = true
 	visible = true
+	$AnimationPlayer.play("fade_in")
+	if $GameOverSound.stream:
+		print("GameOverSound stream loaded: ", $GameOverSound.stream.resource_path)
+		$GameOverSound.play()
+		print("GameOverSound playback started")
+	else:
+		push_error("GameOverSound stream is null or missing")
 	print("Game over screen displayed")
 
 func _on_restart_pressed() -> void:

@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8xxcb1qvkv1g"]
+[gd_scene load_steps=9 format=3 uid="uid://b8xxcb1qvkv1g"]
 
 [ext_resource type="PackedScene" uid="uid://cyv7763u6xfwi" path="res://ship.tscn" id="1_12xl1"]
 [ext_resource type="Script" path="res://main.gd" id="1_rxnk6"]
 [ext_resource type="PackedScene" uid="uid://3xnfey11e5uh" path="res://pickup.tscn" id="2_8a71f"]
 [ext_resource type="PackedScene" uid="uid://b86by26ejjnjy" path="res://space_station.tscn" id="2_g38hk"]
 [ext_resource type="Texture2D" uid="uid://5cc6d3f8ukjh" path="res://arrow.png" id="3_eknjt"]
+[ext_resource type="AudioStream" uid="uid://ckhdkk5yfvusv" path="res://tick.wav" id="6_l0mck"]
+[ext_resource type="Texture2D" uid="uid://b0nfo6jfshxac" path="res://nebulawetstars.png" id="7_44irg"]
+[ext_resource type="Texture2D" uid="uid://b20vq3le2siqh" path="res://nebuladrystars.png" id="8_onynm"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_rxnk6")
@@ -60,4 +63,37 @@ offset_top = 10.0
 offset_right = 69.5
 offset_bottom = 33.0
 grow_horizontal = 2
-text = "Time Bonus: 60.0s"
+text = "Time Bonus: 60 s"
+
+[node name="TimerSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_l0mck")
+volume_db = -10.0
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+custom_minimum_size = Vector2(800, 600)
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -2048.0
+offset_right = 2048.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_44irg")
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+visible = false
+texture_filter = 1
+custom_minimum_size = Vector2(800, 600)
+offset_right = 800.0
+offset_bottom = 600.0
+texture = ExtResource("8_onynm")
+expand_mode = 2

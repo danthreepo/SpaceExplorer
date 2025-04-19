@@ -3,7 +3,7 @@ extends Node2D
 @export var pickup_scene: PackedScene
 @export var spawn_area_width: float = 2000.0
 @export var spawn_area_height: float = 2000.0
-@export var max_time: float = 60.0  # Timer duration in seconds
+@export var max_time: float = 60.0
 
 var pickup_types = ["minerals", "ice", "fuel"]
 var pickups_spawned = {"minerals": 0, "ice": 0, "fuel": 0}
@@ -42,9 +42,14 @@ func _process(delta: float) -> void:
 	if timer_active:
 		time_remaining = max(0.0, max_time - (Time.get_ticks_msec() / 1000.0 - game_start_time))
 		$UI/TimeLabel.text = "Time: %.1fs" % time_remaining
-		if time_remaining <= 0:
-			timer_active = false
-			$Ship.game_over()
+		if time_remaining < 10.0:
+			$UI/TimeLabel.modulate = Color.RED
+			if not $TimerSound.playing:
+				$TimerSound.play()
+		else:
+			$UI/TimeLabel.modulate = Color.WHITE
+			if $TimerSound.playing:
+				$TimerSound.stop()
 
 func spawn_pickup(type: String) -> void:
 	if pickups_spawned[type] >= max_pickups_per_type:

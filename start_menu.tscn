@@ -1,18 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://cullc7yh5jp87"]
+[gd_scene load_steps=8 format=3 uid="uid://cullc7yh5jp87"]
 
 [ext_resource type="Script" path="res://start_menu.gd" id="1_707qa"]
+[ext_resource type="Texture2D" uid="uid://dp65jx1spktu3" path="res://starfield.png" id="2_rngla"]
+[ext_resource type="AudioStream" uid="uid://dguh2p3gkmkwt" path="res://sci_fi_hum.wav" id="3_w5x7g"]
+[ext_resource type="Script" path="res://parallax_background.gd" id="4_nyun1"]
+[ext_resource type="Texture2D" uid="uid://b0nfo6jfshxac" path="res://nebulawetstars.png" id="5_0s7hi"]
+[ext_resource type="Texture2D" uid="uid://b20vq3le2siqh" path="res://nebuladrystars.png" id="6_q7vrl"]
+[ext_resource type="Texture2D" uid="uid://b2f5ovd5vjgj1" path="res://nebulaset.png" id="7_jxwn3"]
 
 [node name="StartMenu" type="CanvasLayer"]
 layer = 100
 script = ExtResource("1_707qa")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+texture_filter = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.662745)
+texture = ExtResource("2_rngla")
+stretch_mode = 1
 
 [node name="TitleLabel" type="Label" parent="."]
 anchors_preset = 8
@@ -74,6 +83,58 @@ offset_bottom = -19.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Reset Score"
+
+[node name="MenuSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_w5x7g")
+volume_db = -10.0
+autoplay = true
+max_polyphony = 4
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("4_nyun1")
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(800, 0)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+custom_minimum_size = Vector2(800, 600)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2048.0
+offset_top = -2054.0
+offset_right = -448.0
+offset_bottom = -1454.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_0s7hi")
+expand_mode = 3
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+motion_mirroring = Vector2(800, 0)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+custom_minimum_size = Vector2(800, 600)
+offset_left = -752.0
+offset_top = 6.0
+offset_right = 848.0
+offset_bottom = 606.0
+texture = ExtResource("6_q7vrl")
+expand_mode = 2
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.8)
+motion_mirroring = Vector2(800, 0)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer3"]
+custom_minimum_size = Vector2(800, 600)
+offset_left = -765.0
+offset_right = 835.0
+offset_bottom = 600.0
+texture = ExtResource("7_jxwn3")
+expand_mode = 2
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="ResetScoreButton" to="." method="_on_reset_score_button_pressed"]

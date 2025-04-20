@@ -31,7 +31,7 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = 210.0
 offset_bottom = 37.0
-max_value = 1.0
+min_value = 1.0
 value = 1.0
 
 [node name="InventoryLabel" type="Label" parent="UI"]
@@ -44,7 +44,7 @@ text = "Inventory: 0 minerals, 0 ice"
 
 [node name="CompassArrow" type="Sprite2D" parent="UI"]
 position = Vector2(750, 50)
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.1, 0.1)
 texture = ExtResource("3_eknjt")
 
 [node name="CompassDistance" type="Label" parent="UI"]

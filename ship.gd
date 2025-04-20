@@ -1,67 +1,64 @@
 extends Area2D
 
-@export var max_speed: float = 300.0
-@export var acceleration: float = 500.0
-@export var rotation_speed: float = 3.0
+# Configuration for movement and fuel
+@export var speed: float = 400.0
+@export var rotation_speed: float = 2.5
+@export var fuel_depletion_rate: float = 5.0
 @export var max_fuel: float = 100.0
-@export var fuel_consumption_rate: float = 10.0
-@export var deceleration: float = 50.0
 
+# Ship state
 var velocity: Vector2 = Vector2.ZERO
-var fuel: float
-var inventory: Dictionary = {"minerals": 0, "ice": 0}
+var fuel: float = max_fuel
+var inventory = {"minerals": 0, "ice": 0}
 
+# Initialize ship and signals
 func _ready() -> void:
-	fuel = max_fuel
-	z_index = 1
-	area_entered.connect(_on_area_entered)
-	print("Ship initialized with fuel: ", fuel)
+	if not area_entered.is_connected(_on_area_entered):
+		area_entered.connect(_on_area_entered)
+	$ThrusterParticles.emitting = false
+	print("Ship initialized, initial fuel: ", fuel) # Debug
 
+# Handle movement, fuel, and particles
 func _physics_process(delta: float) -> void:
-	if Input.is_action_pressed("ui_left"):
-		rotation -= rotation_speed * delta
-	if Input.is_action_pressed("ui_right"):
-		rotation += rotation_speed * delta
-
-	if Input.is_action_pressed("ui_up") and fuel > 0:
-		var direction = Vector2.UP.rotated(rotation)
-		velocity += direction * acceleration * delta
-		velocity = velocity.limit_length(max_speed)
-		fuel -= fuel_consumption_rate * delta
-		if fuel <= 0:
-			fuel = 0
-			game_over()
+	var rotation_dir: float = Input.get_axis("ui_left", "ui_right")
+	rotation += rotation_dir * rotation_speed * delta
+	
+	var thrust: float = Input.get_axis("ui_down", "ui_up")
+	if thrust > 0 and fuel > 0:
+		var direction = Vector2(cos(rotation - PI/2), sin(rotation - PI/2))
+		velocity += direction * speed * thrust * delta
+		fuel = max(0, fuel - fuel_depletion_rate * delta)
+		$ThrusterParticles.emitting = true
+		# print("Thrusting, fuel: ", fuel, " percentage: ", get_fuel_percentage()) # Debug (Disabled)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
+		$ThrusterParticles.emitting = false
+		# print("No thrust, fuel: ", fuel, " percentage: ", get_fuel_percentage()) # Debug (Disabled)
+	
+	global_position += velocity * delta
+	
+	if fuel <= 0 and not get_tree().paused:
+		print("Fuel depleted, game over") # Debug
+		var game_over_scene = preload("res://game_over.tscn").instantiate()
+		get_parent().add_child(game_over_scene)
 
-	position += velocity * delta
-
-func _on_area_entered(area: Area2D) -> void:
-	print("Ship collided with: ", area.name, " in group: ", area.get_groups())
-	if area.is_in_group("pickups"):
-		var pickup = area
-		match pickup.resource_type:
-			"fuel":
-				fuel = max_fuel
-				print("Collected fuel, new fuel: ", fuel)
-			"minerals":
-				inventory.minerals += 1
-				print("Collected mineral, inventory: ", inventory)
-			"ice":
-				inventory.ice += 1
-				print("Collected ice, inventory: ", inventory)
-		pickup.queue_free()
-	elif area.is_in_group("space_station"):
-		var station = area
-		station.store_resources(inventory)
-		inventory = {"minerals": 0, "ice": 0}
-		fuel = max_fuel
-		print("Dropped off at station, inventory reset, fuel refilled: ", fuel)
-
+# Provide fuel percentage for UI
 func get_fuel_percentage() -> float:
-	return fuel / max_fuel
+	var percentage = (fuel / max_fuel) * 100.0
+	# print("get_fuel_percentage called, returning: ", percentage) # Debug (Disabled)
+	return percentage
 
-func game_over() -> void:
-	var game_over_scene = preload("res://game_over.tscn").instantiate()
-	get_tree().current_scene.add_child(game_over_scene)
-	print("Game over triggered")
+# Handle collisions with pickups or space station
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("pickups"):
+		if area.resource_type == "fuel":
+			fuel = max_fuel
+			print("Collected fuel, new fuel: ", fuel, " percentage: ", get_fuel_percentage()) # Debug
+		else:
+			inventory[area.resource_type] += 1
+			print("Collected ", area.resource_type, ", inventory: ", inventory) # Debug
+		area.queue_free()
+	elif area.is_in_group("space_station"):
+		fuel = max_fuel
+		area.store_resources(inventory)
+		inventory = {"minerals": 0, "ice": 0}
+		print("Stored resources at station, inventory reset, fuel refilled: ", fuel) # Debug

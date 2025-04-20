@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://623g1hmjnwsg"]
+
+[ext_resource type="Texture2D" uid="uid://bt7ppu0l7wo67" path="res://mob.png" id="1_m1n7n"]
+[ext_resource type="Script" path="res://mob.gd" id="1_qp30y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_touxh"]
+radius = 15.0
+
+[node name="Mob" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_qp30y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_m1n7n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_touxh")

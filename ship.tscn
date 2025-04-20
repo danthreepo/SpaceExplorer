@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://cyv7763u6xfwi"]
+[gd_scene load_steps=15 format=3 uid="uid://cyv7763u6xfwi"]
 
 [ext_resource type="Script" path="res://ship.gd" id="1_i6t5v"]
 [ext_resource type="Texture2D" uid="uid://di6ryrc6h6w6r" path="res://ship.png" id="1_yvwfj"]
 [ext_resource type="AudioStream" uid="uid://c7dfgv4ce523m" path="res://thruster.wav" id="3_58u4s"]
+[ext_resource type="AudioStream" uid="uid://j8dmqwf4wb5w" path="res://weapon_shot.wav" id="4_ey33l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u0555"]
 radius = 20.0
@@ -76,3 +77,11 @@ lifetime = 0.25
 [node name="ThrusterSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_58u4s")
 volume_db = 20.0
+
+[node name="Weapon" type="Node2D" parent="."]
+
+[node name="WeaponSound" type="AudioStreamPlayer2D" parent="Weapon"]
+position = Vector2(-8.5, -22)
+stream = ExtResource("4_ey33l")
+volume_db = 10.0
+max_polyphony = 6

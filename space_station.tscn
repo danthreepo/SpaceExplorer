@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b86by26ejjnjy"]
+[gd_scene load_steps=6 format=3 uid="uid://b86by26ejjnjy"]
 
 [ext_resource type="Script" path="res://space_station.gd" id="1_toh2p"]
 [ext_resource type="Texture2D" uid="uid://bg6xd2m7x5f2p" path="res://spacestation.png" id="2_tbygj"]
+[ext_resource type="AudioStream" uid="uid://c5maf4022wkb1" path="res://docking.wav" id="3_fpm1t"]
+[ext_resource type="AudioStream" uid="uid://5q2nev7qcydv" path="res://ambient_station.wav" id="4_4kkcg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ry4xg"]
 radius = 32.0
@@ -11,7 +13,20 @@ collision_layer = 4
 script = ExtResource("1_toh2p")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_tbygj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ry4xg")
+
+[node name="SpaceStationSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_fpm1t")
+volume_db = 10.0
+max_polyphony = 4
+
+[node name="AmbientSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_4kkcg")
+volume_db = 10.0
+max_distance = 1000.0
+attenuation = 1.5
+max_polyphony = 5

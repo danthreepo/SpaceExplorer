@@ -4,14 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://b4p4u6s1i7r5p" path="res://fuel.png" id="2_7ugr6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kelr5"]
-radius = 8.0
+radius = 12.0
 
 [node name="Pickup" type="Area2D" groups=["pickups"]]
 collision_layer = 2
 script = ExtResource("1_53i5s")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.05, 0.05)
 texture = ExtResource("2_7ugr6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

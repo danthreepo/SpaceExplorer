@@ -1,10 +1,57 @@
-[gd_scene load_steps=4 format=3 uid="uid://cyv7763u6xfwi"]
+[gd_scene load_steps=14 format=3 uid="uid://cyv7763u6xfwi"]
 
 [ext_resource type="Script" path="res://ship.gd" id="1_i6t5v"]
 [ext_resource type="Texture2D" uid="uid://di6ryrc6h6w6r" path="res://ship.png" id="1_yvwfj"]
+[ext_resource type="AudioStream" uid="uid://c7dfgv4ce523m" path="res://thruster.wav" id="3_58u4s"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u0555"]
-radius = 16.0
+radius = 20.0
+
+[sub_resource type="Curve" id="Curve_qa3wr"]
+_data = [Vector2(0.0134409, 0.0743244), 0.0, 0.0, 0, 0, Vector2(0.973118, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_5hf5g"]
+curve = SubResource("Curve_qa3wr")
+
+[sub_resource type="Gradient" id="Gradient_o2hlk"]
+offsets = PackedFloat32Array(0, 0.97093)
+colors = PackedColorArray(0.678864, 0.753879, 0.819067, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aumgg"]
+gradient = SubResource("Gradient_o2hlk")
+
+[sub_resource type="Gradient" id="Gradient_76w6d"]
+offsets = PackedFloat32Array(0, 0.00290698, 0.0959302, 0.218023)
+colors = PackedColorArray(0, 0, 0, 1, 0.745892, 0.829583, 0.846222, 1, 1, 1, 1, 1, 0.754208, 0.83516, 0.851254, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h5gbu"]
+gradient = SubResource("Gradient_76w6d")
+
+[sub_resource type="Curve" id="Curve_0x36e"]
+max_value = 3.0
+_data = [Vector2(0.0266667, 2.01099), 0.0, -0.0383336, 0, 0, Vector2(1, 0.0659341), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qg8re"]
+curve = SubResource("Curve_0x36e")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7kd46"]
+particle_flag_disable_z = true
+direction = Vector3(0, 1, 0)
+spread = 1.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_min = 3.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_qg8re")
+color = Color(0.424245, 0.715579, 0.859799, 1)
+color_ramp = SubResource("GradientTexture1D_h5gbu")
+color_initial_ramp = SubResource("GradientTexture1D_aumgg")
+alpha_curve = SubResource("CurveTexture_5hf5g")
+turbulence_noise_strength = 1.39
+turbulence_noise_scale = 7.01
 
 [node name="Ship" type="Area2D"]
 z_index = 1
@@ -12,8 +59,20 @@ collision_mask = 6
 script = ExtResource("1_i6t5v")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, 3)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_yvwfj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_u0555")
+
+[node name="ThrusterParticles" type="GPUParticles2D" parent="."]
+position = Vector2(0, 18)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_7kd46")
+lifetime = 0.25
+
+[node name="ThrusterSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_58u4s")
+volume_db = 20.0

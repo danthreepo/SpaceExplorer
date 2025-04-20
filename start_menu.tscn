@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://cullc7yh5jp87"]
+[gd_scene load_steps=9 format=3 uid="uid://cullc7yh5jp87"]
 
 [ext_resource type="Script" path="res://start_menu.gd" id="1_707qa"]
 [ext_resource type="Texture2D" uid="uid://dp65jx1spktu3" path="res://starfield.png" id="2_rngla"]
-[ext_resource type="AudioStream" uid="uid://dguh2p3gkmkwt" path="res://sci_fi_hum.wav" id="3_w5x7g"]
+[ext_resource type="AudioStream" uid="uid://2bceq6le7n4b" path="res://bgm_space.wav" id="3_ie4dx"]
 [ext_resource type="Script" path="res://parallax_background.gd" id="4_nyun1"]
 [ext_resource type="Texture2D" uid="uid://b0nfo6jfshxac" path="res://nebulawetstars.png" id="5_0s7hi"]
 [ext_resource type="Texture2D" uid="uid://b20vq3le2siqh" path="res://nebuladrystars.png" id="6_q7vrl"]
 [ext_resource type="Texture2D" uid="uid://b2f5ovd5vjgj1" path="res://nebulaset.png" id="7_jxwn3"]
+[ext_resource type="Texture2D" uid="uid://lobt8d8xrume" path="res://SpaceOdyssey.png" id="8_a8vuq"]
 
 [node name="StartMenu" type="CanvasLayer"]
 layer = 100
@@ -24,6 +25,7 @@ texture = ExtResource("2_rngla")
 stretch_mode = 1
 
 [node name="TitleLabel" type="Label" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -85,7 +87,7 @@ grow_vertical = 0
 text = "Reset Score"
 
 [node name="MenuSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_w5x7g")
+stream = ExtResource("3_ie4dx")
 volume_db = -10.0
 autoplay = true
 max_polyphony = 4
@@ -135,6 +137,11 @@ offset_right = 835.0
 offset_bottom = 600.0
 texture = ExtResource("7_jxwn3")
 expand_mode = 2
+
+[node name="SpaceOdyssey" type="Sprite2D" parent="."]
+position = Vector2(402, 262)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("8_a8vuq")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="ResetScoreButton" to="." method="_on_reset_score_button_pressed"]

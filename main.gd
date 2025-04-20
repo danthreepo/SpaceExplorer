@@ -24,6 +24,8 @@ func _ready() -> void:
 			spawn_pickup(type)
 	$SpaceStation.win_game.connect(_on_win_game)
 	$Ship.area_entered.connect(_on_ship_area_entered)
+	if not $BackgroundMusic.finished.is_connected(_on_background_music_finished):
+		$BackgroundMusic.finished.connect(_on_background_music_finished)
 	print("Main initialized, FuelBar: ", $UI/FuelBar) # Debug
 
 # Update UI and timer every frame
@@ -109,3 +111,9 @@ func _on_win_game() -> void:
 func _on_ship_area_entered(area: Area2D) -> void:
 	if area.is_in_group("space_station") and $SpaceStation.stored_inventory.minerals >= 8 and $SpaceStation.stored_inventory.ice >= 8:
 		timer_active = false
+
+# Loop background music
+func _on_background_music_finished() -> void:
+	if $BackgroundMusic.stream and not $BackgroundMusic.playing:
+		$BackgroundMusic.play()
+		print("Background music looped") # Debug

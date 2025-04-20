@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddpofov3uyy88"]
+
+[ext_resource type="Script" path="res://pickup_effect.gd" id="1_8bntc"]
+
+[node name="PickupEffect" type="Node2D"]
+script = ExtResource("1_8bntc")
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+amount = 100
+lifetime = 5.0
+speed_scale = 50.0
+emission_shape = 1
+emission_sphere_radius = 35.0
+spread = 180.0
+gravity = Vector2(0, 0)
+color = Color(1, 1, 0, 1)
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
